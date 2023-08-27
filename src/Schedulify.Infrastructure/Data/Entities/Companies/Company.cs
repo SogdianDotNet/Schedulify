@@ -2,7 +2,7 @@
 
 namespace Schedulify.Infrastructure.Data.Entities.Companies;
 
-internal class Company : BaseEntity
+internal class Company : Entity
 {
     public required string Name { get; set; }
     public required string Website { get; set; }

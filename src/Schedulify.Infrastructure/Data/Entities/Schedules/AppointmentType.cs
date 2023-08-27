@@ -3,7 +3,7 @@ using Schedulify.Infrastructure.Data.Entities.Finances;
 
 namespace Schedulify.Infrastructure.Data.Entities.Schedules;
 
-internal class AppointmentType : BaseEntity
+internal class AppointmentType : Entity
 {
     public required string Name { get; set; }
     public virtual ICollection<Appointment>? Appointments { get; set; }

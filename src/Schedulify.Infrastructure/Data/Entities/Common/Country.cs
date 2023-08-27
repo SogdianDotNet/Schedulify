@@ -3,7 +3,7 @@ using Schedulify.Infrastructure.Data.Entities.Vats;
 
 namespace Schedulify.Infrastructure.Data.Entities.Common;
 
-internal class Country : BaseEntity
+internal class Country : Entity
 {
     public required string Name { get; set; }
     public required string Code { get; set; }

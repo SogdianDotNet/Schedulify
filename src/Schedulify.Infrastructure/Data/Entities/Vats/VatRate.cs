@@ -3,7 +3,7 @@ using Schedulify.Infrastructure.Data.Entities.Common;
 
 namespace Schedulify.Infrastructure.Data.Entities.Vats;
 
-internal class VatRate : BaseEntity
+internal class VatRate : Entity
 {
     public decimal Rate { get; set; }
     public DateTime ActiveFrom { get; set; }

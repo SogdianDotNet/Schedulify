@@ -4,7 +4,7 @@ using Schedulify.Infrastructure.Data.Entities.Employees;
 
 namespace Schedulify.Infrastructure.Data.Entities.Schedules;
 
-internal class EmployeeAbsence : BaseEntity
+internal class EmployeeAbsence : Entity
 {
     public DateTime StartDateUtc { get; set; }
     public DateTime? EndDateUtc { get; set; }

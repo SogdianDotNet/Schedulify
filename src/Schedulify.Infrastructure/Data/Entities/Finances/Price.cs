@@ -3,7 +3,7 @@ using Schedulify.Infrastructure.Data.Entities.Vats;
 
 namespace Schedulify.Infrastructure.Data.Entities.Finances;
 
-internal class Price : BaseEntity
+internal class Price : Entity
 {
     public decimal Value { get; set; }
     public DateTime StartDate { get; set; }

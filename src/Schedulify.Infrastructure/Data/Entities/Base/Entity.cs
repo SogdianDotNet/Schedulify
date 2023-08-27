@@ -1,10 +1,8 @@
 ﻿namespace Schedulify.Infrastructure.Data.Entities.Base;
 
-internal abstract class BaseEntity : IBaseEntity
+internal abstract class Entity : IEntity
 {
     public Guid Id { get; set; }
     public DateTime CreatedOnUtc { get; set; }
     public DateTime? ModifiedOnUtc { get; set; }
-    public bool IsDeleted { get; set; }
-    public DateTime? DeletedOnUtc { get; set; }
 }

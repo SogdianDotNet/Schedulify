@@ -3,7 +3,7 @@ using Schedulify.Infrastructure.Data.Entities.Employees;
 
 namespace Schedulify.Infrastructure.Data.Entities.Contracts;
 
-internal class Contract : BaseEntity
+internal class Contract : Entity
 {
     public bool IsSignedByEmployee { get; set; }
     public DateTime? DateSignedByEmployee { get; set; }

@@ -3,7 +3,7 @@ using Schedulify.Infrastructure.Data.Entities.Employees;
 
 namespace Schedulify.Infrastructure.Data.Entities.Schedules;
 
-internal class EmployeeAvailability : BaseEntity
+internal class EmployeeAvailability : Entity
 {
     public DateTime StartDateUtc { get; set; }
     public DateTime? EndDateUtc { get; set; }

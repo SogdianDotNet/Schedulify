@@ -3,7 +3,7 @@ using Schedulify.Infrastructure.Data.Entities.Companies;
 
 namespace Schedulify.Infrastructure.Data.Entities.Common;
 
-internal class Address : BaseEntity
+internal class Address : Entity
 {
     public required string Street { get; set; }
     public required string City { get; set; }

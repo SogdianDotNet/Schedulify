@@ -2,7 +2,7 @@
 
 namespace Schedulify.Infrastructure.Data.Entities.Companies;
 
-internal class CompanyBranchSettings : BaseEntity
+internal class CompanyBranchSettings : Entity
 {
     public int DaysBeforeCancellation { get; set; }
     public int HoursBeforeCancellation { get; set; }

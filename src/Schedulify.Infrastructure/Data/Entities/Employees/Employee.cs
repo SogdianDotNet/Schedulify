@@ -6,7 +6,7 @@ using Schedulify.Infrastructure.Data.Entities.Schedules;
 
 namespace Schedulify.Infrastructure.Data.Entities.Employees;
 
-internal class Employee : BaseEntity
+internal class Employee : Entity
 {
     public required string FirstName { get; set; }
     public required string LastName { get; set; }

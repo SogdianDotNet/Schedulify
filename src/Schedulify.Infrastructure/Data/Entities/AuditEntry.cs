@@ -2,7 +2,7 @@
 
 namespace Schedulify.Infrastructure.Data.Entities;
 
-internal class AuditEntry : BaseEntity
+internal class AuditEntry : Entity
 {
     public required AuditAction Action { get; set; }
     public required string TableName { get; set; }

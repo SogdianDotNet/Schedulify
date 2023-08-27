@@ -2,7 +2,7 @@
 
 namespace Schedulify.Infrastructure.Data.Entities.Companies;
 
-internal class CompanySettings : BaseEntity
+internal class CompanySettings : Entity
 {
     public virtual required Company Company { get; set; }
 }
