@@ -2,7 +2,7 @@
 
 namespace Schedulify.Domain.Dtos.Vats;
 
-public class VatRateDto : BaseDto
+public class VatRateDto : Dto
 {
     public decimal Rate { get; set; }
     public DateTime ActiveFrom { get; set; }

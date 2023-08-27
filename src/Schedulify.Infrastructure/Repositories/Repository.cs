@@ -21,7 +21,7 @@ internal abstract class Repository<T> : IRepository<T> where T : Entity
         return await _dbContext.Set<T>().FindAsync(id);
     }
 
-    public async Task<IReadOnlyCollection<T>> GetAll(CancellationToken cancellationToken = default)
+    public async Task<IReadOnlyCollection<T>> GetAllAsync(CancellationToken cancellationToken = default)
     {
         return (await _dbContext.Set<T>().ToListAsync(cancellationToken)).AsReadOnly();
     }

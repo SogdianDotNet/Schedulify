@@ -6,7 +6,7 @@ namespace Schedulify.Infrastructure.Repositories;
 internal interface IRepository<T> where T : Entity
 {
     Task<T?> GetAsync(Guid id, CancellationToken cancellationToken = default);
-    Task<IReadOnlyCollection<T>> GetAll(CancellationToken cancellationToken = default);
+    Task<IReadOnlyCollection<T>> GetAllAsync(CancellationToken cancellationToken = default);
     Task<IReadOnlyCollection<T>> FindAsync(Expression<Func<T, bool>>? expression, CancellationToken cancellationToken = default);
     Task<T> CreateAsync(T entity, CancellationToken cancellationToken = default);
     Task<T> CreateAsync(T entity, List<Expression<Func<T, object>>>? includes = null, CancellationToken cancellationToken = default);

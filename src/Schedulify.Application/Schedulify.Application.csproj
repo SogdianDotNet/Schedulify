@@ -18,4 +18,8 @@
     <ProjectReference Include="..\Schedulify.Domain\Schedulify.Domain.csproj" />
   </ItemGroup>
 
+
+
+
+
 </Project>

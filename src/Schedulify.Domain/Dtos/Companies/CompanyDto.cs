@@ -2,7 +2,7 @@
 
 namespace Schedulify.Domain.Dtos.Companies;
 
-public class CompanyDto : BaseDto
+public class CompanyDto : Dto
 {
     public required string Name { get; set; }
     public required string Website { get; set; }
@@ -10,4 +10,8 @@ public class CompanyDto : BaseDto
     public required string CoCNumber { get; set; }
     public required string Email { get; set; }
     public required string Description { get; set; }
+    public bool IsBlocked { get; set; }
+    public DateTime? StartDateTimeBlockedUtc { get; set; }
+    public DateTime? EndDateTimeBlockedUtc { get; set; }
+    public CompanySettingsDto? CompanySettings { get; set; }
 }

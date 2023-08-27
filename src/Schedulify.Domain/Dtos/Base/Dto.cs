@@ -1,15 +1,6 @@
 ﻿namespace Schedulify.Domain.Dtos.Base;
 
-internal interface IBaseDto
-{
-    Guid Id { get; set; }
-    DateTime CreatedOnUtc { get; set; }
-    DateTime? ModifiedOnUtc { get; set; }
-    bool IsDeleted { get; set; }
-    DateTime? DeletedOnUtc { get; set; }
-}
-
-public abstract class BaseDto
+public abstract class Dto
 {
     public Guid Id { get; set; }
     public DateTime CreatedOnUtc { get; set; }

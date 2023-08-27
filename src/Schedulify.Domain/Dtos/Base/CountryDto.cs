@@ -3,7 +3,7 @@ using Schedulify.Domain.Dtos.Vats;
 
 namespace Schedulify.Domain.Dtos.Base;
 
-public class CountryDto : BaseDto
+public class CountryDto : Dto
 {
     public required string Name { get; set; }
     public required string Code { get; set; }

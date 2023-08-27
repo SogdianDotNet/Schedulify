@@ -2,7 +2,7 @@
 
 namespace Schedulify.Domain.Dtos.Common;
 
-public class AddressDto : BaseDto
+public class AddressDto : Dto
 {
     public required string Street { get; set; }
     public required string City { get; set; }
