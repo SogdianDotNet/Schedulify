@@ -7,13 +7,14 @@ using Schedulify.Application.Configurations;
 using Schedulify.Application.Exceptions;
 using Schedulify.Application.Interfaces;
 using Schedulify.Application.Providers;
+using Schedulify.Application.Services.Interfaces;
 using Schedulify.Domain.Commands;
 using Schedulify.Domain.Dtos.Users;
 using Schedulify.Domain.Dtos.Users.Enums;
 
 namespace Schedulify.Application.Services;
 
-public sealed class UserService
+public sealed class UserService : IUserService
 {
     private readonly IValidator<LoginDto> _loginValidator;
     private readonly IValidator<CreateUserDto> _createUserValidator;
@@ -36,6 +37,11 @@ public sealed class UserService
         _jwtProvider = jwtProvider;
         _queueClient = queueClient;
         _webFrontendConfiguration = webFrontendConfiguration;
+    }
+
+    public Task<UserDto> GetAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        return _userRepository.GetAsync(id, cancellationToken);
     }
 
     public async Task<UserDto> CreateAsync(CreateUserDto dto, CancellationToken cancellationToken = default)
