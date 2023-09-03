@@ -2,6 +2,7 @@
 using Schedulify.Domain.Dtos.Common;
 using Schedulify.Domain.Dtos.Companies;
 using Schedulify.Domain.Dtos.Contracts;
+using Schedulify.Domain.Dtos.Schedules;
 
 namespace Schedulify.Domain.Dtos.Employees;
 
@@ -18,7 +19,7 @@ public class EmployeeDto : Dto
     public List<NationalityDto> Nationalities { get; set; } = new();
     public List<ContractDto>? Contracts { get; set; } = new();
     public List<CompanyBranchDto>? CompanyBranches { get; set; } = new();
-    //public virtual ICollection<EmployeeAvailability>? EmployeeAvailabilities { get; set; }
-    //public virtual ICollection<EmployeeAbsence>? EmployeeAbsences { get; set; }
-    //public virtual ICollection<Appointment>? Appointments { get; set; }
+    public virtual ICollection<EmployeeAvailabilityDto>? EmployeeAvailabilities { get; set; }
+    public virtual ICollection<EmployeeAbsenceDto>? EmployeeAbsences { get; set; }
+    public virtual ICollection<AppointmentDto>? Appointments { get; set; }
 }

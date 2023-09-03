@@ -1,9 +1,9 @@
-﻿using Schedulify.Infrastructure.Data.Entities.Base;
-using Schedulify.Infrastructure.Data.Entities.Employees;
+﻿using Schedulify.Domain.Dtos.Base;
+using Schedulify.Domain.Dtos.Employees;
 
-namespace Schedulify.Infrastructure.Data.Entities.Schedules;
+namespace Schedulify.Domain.Dtos.Schedules;
 
-internal class Appointment : Entity
+public class AppointmentDto : Dto
 {
     public required string FirstName { get; set; }
     public required string LastName { get; set; }
@@ -14,6 +14,6 @@ internal class Appointment : Entity
     public DateTime EndDateTimeUtc { get; set; }
     public bool IsCanceled { get; set; }
     public DateTime? CancellationDateTimeUtc { get; set; }
-    public virtual required Employee Employee { get; set; }
-    public virtual required AppointmentType AppointmentType { get; set; }
+    public EmployeeDto? Employee { get; set; }
+    public AppointmentTypeDto? AppointmentType { get; set; }
 }

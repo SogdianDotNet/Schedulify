@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Schedulify.Infrastructure.Data.Entities.Companies;
 using Schedulify.Infrastructure.Data.Entities.Contracts;
+using Schedulify.Infrastructure.Data.Entities.Employees;
 using Schedulify.Infrastructure.Data.Entities.Users;
 
 namespace Schedulify.Infrastructure.Data;
@@ -25,5 +26,6 @@ internal class SchedulifyDbContext : IdentityDbContext<User, Role, Guid, UserCla
     public virtual DbSet<CompanyBranchAddress> CompanyBranchAddresses { get; set; }
     public virtual DbSet<CompanyBranchEmployee> CompanyBranchEmployees { get; set; }
     public virtual DbSet<CompanyBranchSettings> CompanyBranchSettings { get; set; }
+    public virtual DbSet<Employee> Employees { get; set; }
     public virtual DbSet<CompanySettings> CompanySettings { get; set; }
 }

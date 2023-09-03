@@ -1,4 +1,6 @@
-﻿using Schedulify.Infrastructure.Data.Entities.Base;
+﻿using System.Collections;
+using Schedulify.Infrastructure.Data.Entities.Base;
+using Schedulify.Infrastructure.Data.Entities.Users;
 
 namespace Schedulify.Infrastructure.Data.Entities.Companies;
 
@@ -15,4 +17,5 @@ internal class Company : Entity
     public DateTime? EndDateTimeBlockedUtc { get; set; }
     public virtual required CompanySettings CompanySettings { get; set; }
     public virtual ICollection<CompanyBranch>? CompanyBranches { get; set; }
+    public virtual ICollection<User>? Users { get; set; }
 }

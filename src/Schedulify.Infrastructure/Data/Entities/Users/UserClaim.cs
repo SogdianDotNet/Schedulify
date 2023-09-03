@@ -4,7 +4,7 @@ using Schedulify.Infrastructure.Data.Attributes;
 namespace Schedulify.Infrastructure.Data.Entities.Users;
 
 [DisableAudit]
-public class UserClaim : IdentityUserClaim<Guid>
+internal class UserClaim : IdentityUserClaim<Guid>
 {
     public virtual User User { get; set; }
 }

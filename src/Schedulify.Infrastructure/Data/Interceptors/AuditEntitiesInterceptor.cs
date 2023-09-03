@@ -81,16 +81,16 @@ internal sealed class AuditEntitiesInterceptor : SaveChangesInterceptor
         {
             switch (entry.State)
             {
-                case EntityState.Added when entry.Entity is Entity auditDate:
+                case EntityState.Added when entry.Entity is IEntity auditDate:
                     auditDate.CreatedOnUtc = utcNow;
                     auditDate.ModifiedOnUtc = utcNow;
                     break;
 
-                case EntityState.Modified when entry.Entity is Entity auditDate:
+                case EntityState.Modified when entry.Entity is IEntity auditDate:
                     auditDate.ModifiedOnUtc = utcNow;
                     break;
 
-                case EntityState.Deleted when entry.Entity is SoftDeleteEntity softDeletable:
+                case EntityState.Deleted when entry.Entity is ISoftDeleteEntity softDeletable:
                     softDeletable.IsDeleted = true;
                     softDeletable.DeletedOnUtc = utcNow;
                     entry.State = EntityState.Modified;
