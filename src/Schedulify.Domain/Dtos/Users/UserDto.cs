@@ -20,6 +20,7 @@ public class UserDto : Dto
     public bool LockoutEnabled { get; set; }
     public int AccessFailedCount { get; set; }
     public bool IsAllowedToLogin { get; set; }
+    public DateTime? LastAccessFailedUtc { get; set; }
     public string[] Roles { get; set; } = Array.Empty<string>();
     
     public CompanyDto? Company { get; set; }

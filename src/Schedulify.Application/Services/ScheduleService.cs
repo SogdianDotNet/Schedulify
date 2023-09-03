@@ -11,6 +11,6 @@ public class ScheduleService
 
     public async Task CreateAppointmentAsync(AppointmentDto dto, CancellationToken cancellationToken = default)
     {
-        var employee = await 
+        throw new NotImplementedException();
     }
 }

@@ -11,7 +11,7 @@ namespace Schedulify.Infrastructure.Data.Interceptors;
 
 internal sealed class AuditEntitiesInterceptor : SaveChangesInterceptor
 {
-    public readonly IClaimsProvider _claimProvider;
+    private readonly IClaimsProvider _claimProvider;
 
     public AuditEntitiesInterceptor(IClaimsProvider claimProvider)
     {
@@ -28,13 +28,14 @@ internal sealed class AuditEntitiesInterceptor : SaveChangesInterceptor
         {
             return await base.SavingChangesAsync(eventData, result, cancellationToken);
         }
-
+            
+        OnBeforeSaveChanges(eventData);
         return await base.SavingChangesAsync(eventData, result, cancellationToken);
     }
 
     private void OnBeforeSaveChanges(DbContextEventData eventData)
     {
-        eventData.Context.ChangeTracker.DetectChanges();
+        eventData.Context?.ChangeTracker.DetectChanges();
 
         var auditEntries = Create(eventData.Context.ChangeTracker.Entries().ToList());
 

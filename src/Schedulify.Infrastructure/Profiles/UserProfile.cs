@@ -34,5 +34,6 @@ public class UserProfile : Profile
         CreateMap<User, UserDto>()
             .ForMember(d => d.Roles, o => o.MapFrom(s => 
                 s.UserRoles != null ? s.UserRoles.Select(ur => ur.Role.Name).ToArray() : Array.Empty<string>()));
+        CreateMap<CreateUserDto, User>(MemberList.None);
     }
 }

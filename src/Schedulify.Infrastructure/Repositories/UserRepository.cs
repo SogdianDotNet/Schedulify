@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Schedulify.Application.Interfaces;
 using Schedulify.Domain.Dtos.Users;
 using Schedulify.Domain.Enums;
 using Schedulify.Infrastructure.Data;
@@ -8,7 +9,7 @@ using Schedulify.Infrastructure.Data.Entities.Users;
 
 namespace Schedulify.Infrastructure.Repositories;
 
-internal class UserRepository
+internal class UserRepository : IUserRepository
 {
     private readonly IMapper _mapper;
     private readonly UserManager<User> _userManager;
@@ -30,6 +31,34 @@ internal class UserRepository
             .SingleAsync(x => x.Id == id, cancellationToken);
 
         return _mapper.Map<UserDto>(user);
+    }
+
+    public async Task<UserDto> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
+    {
+        var user = await _dbContext.Users
+            .Include(x => x.UserRoles)!
+            .ThenInclude(x => x.Role)
+            .AsNoTracking()
+            .SingleAsync(x => x.Email!.ToLower() == email.ToLower(), cancellationToken);
+
+        return _mapper.Map<UserDto>(user);
+    }
+
+    public async Task<bool> CheckPasswordAsync(UserDto dto, string password)
+    {
+        var user = _mapper.Map<User>(dto);
+
+        return await _userManager.CheckPasswordAsync(user, password);
+    }
+
+    public Task ResetAccessFailedCountAsync(UserDto dto)
+    {
+        return _userManager.ResetAccessFailedCountAsync(_mapper.Map<User>(dto));
+    }
+
+    public Task AccessFailedAsync(UserDto dto)
+    {
+        return _userManager.AccessFailedAsync(_mapper.Map<User>(dto));
     }
 
     public async Task<IReadOnlyCollection<UserDto>> GetByCompanyAsync(Guid companyId, CancellationToken cancellationToken = default)
@@ -54,7 +83,7 @@ internal class UserRepository
         return _mapper.Map<IReadOnlyCollection<UserDto>>(users);
     }
 
-    public async Task<UserDto> CreateAsync(UserDto dto, string password)
+    public async Task<UserDto> CreateAsync(CreateUserDto dto, string password)
     {
         var user = _mapper.Map<User>(dto);
         user.CreatedOnUtc = DateTime.UtcNow;
@@ -65,8 +94,14 @@ internal class UserRepository
         {
             throw new InvalidOperationException();
         }
-
+        
+        await _userManager.AddToRolesAsync(user, dto.Roles);
         return _mapper.Map<UserDto>(user);
+    }
+
+    public Task<string> GenerateEmailConfirmationTokenAsync(UserDto dto)
+    {
+        return _userManager.GenerateEmailConfirmationTokenAsync(_mapper.Map<User>(dto));
     }
 
     public async Task<UserDto> UpdateAsync(UserDto dto)
