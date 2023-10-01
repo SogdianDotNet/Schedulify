@@ -1,9 +1,9 @@
 ﻿using System.Linq.Expressions;
 using AutoMapper;
+using Schedulify.Application.Dtos.Companies;
 using Schedulify.Application.Interfaces;
-using Schedulify.Domain.Dtos.Companies;
+using Schedulify.Domain.Entities.Companies;
 using Schedulify.Infrastructure.Data;
-using Schedulify.Infrastructure.Data.Entities.Companies;
 
 namespace Schedulify.Infrastructure.Repositories;
 
@@ -17,17 +17,17 @@ internal class CompanyRepository : Repository<Company>, ICompanyRepository
         _mapper = mapper;
     }
 
-    public new async Task<CompanyDto?> GetAsync(Guid id, CancellationToken cancellationToken = default)
+    public new async Task<Company?> GetAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        return _mapper.Map<CompanyDto>(await base.GetAsync(id, cancellationToken));
+        return await base.GetAsync(id, cancellationToken);
     }
 
-    public new async Task<IReadOnlyCollection<CompanyDto>> GetAllAsync(CancellationToken cancellationToken = default)
+    public new async Task<IReadOnlyCollection<Company>> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        return _mapper.Map<IReadOnlyCollection<CompanyDto>>(await base.GetAllAsync(cancellationToken));
+        return await base.GetAllAsync(cancellationToken);
     }
 
-    public async Task<CompanyDto> CreateAsync(CompanyDto dto, CancellationToken cancellationToken = default)
+    public async Task<Company> CreateAsync(CompanyDto dto, CancellationToken cancellationToken = default)
     {
         var entity = _mapper.Map<Company>(dto);
 
@@ -37,7 +37,7 @@ internal class CompanyRepository : Repository<Company>, ICompanyRepository
             x => x.CompanyBranches
         };
         
-        return _mapper.Map<CompanyDto>(await base.CreateAsync(entity, includes, cancellationToken));
+        return await base.CreateAsync(entity, includes, cancellationToken);
     }
 
     public async Task<CompanyDto> UpdateAsync(CompanyDto dto, CancellationToken cancellationToken = default)

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
+using Schedulify.Domain.Entities.Schedules;
 using Schedulify.Infrastructure.Data;
-using Schedulify.Infrastructure.Data.Entities.Schedules;
 
 namespace Schedulify.Infrastructure.Repositories;
 

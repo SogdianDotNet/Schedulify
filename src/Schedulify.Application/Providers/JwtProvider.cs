@@ -3,8 +3,8 @@ using System.Security.Claims;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Schedulify.Application.Configurations;
+using Schedulify.Application.Dtos.Users;
 using Schedulify.Application.Encoders;
-using Schedulify.Domain.Dtos.Users;
 
 namespace Schedulify.Application.Providers;
 

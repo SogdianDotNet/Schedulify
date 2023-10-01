@@ -1,4 +1,4 @@
-﻿using Schedulify.Domain.Dtos.Schedules;
+﻿using Schedulify.Application.Dtos.Schedules;
 
 namespace Schedulify.Application.Services;
 

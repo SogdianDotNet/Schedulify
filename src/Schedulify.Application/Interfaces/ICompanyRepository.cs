@@ -1,12 +1,12 @@
-﻿using Schedulify.Domain.Dtos.Companies;
+﻿using Schedulify.Domain.Entities.Companies;
 
 namespace Schedulify.Application.Interfaces;
 
-public interface ICompanyRepository
+internal interface ICompanyRepository
 {
-    new Task<CompanyDto?> GetAsync(Guid id, CancellationToken cancellationToken = default);
-    Task<CompanyDto> CreateAsync(CompanyDto dto, CancellationToken cancellationToken = default);
-    new Task<IReadOnlyCollection<CompanyDto>> GetAllAsync(CancellationToken cancellationToken = default);
+    Task<Company?> GetAsync(Guid id, CancellationToken cancellationToken = default);
+    Task<Company> CreateAsync(Company company, CancellationToken cancellationToken = default);
+    Task<IReadOnlyCollection<Company>> GetAllAsync(CancellationToken cancellationToken = default);
     Task BlockAsync(Guid companyId, DateTime? startDate, DateTime? endDate,
         CancellationToken cancellationToken = default);
     Task UnblockAsync(Guid companyId, CancellationToken cancellationToken = default);

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Schedulify.Infrastructure.Data.Entities.Base;
+using Schedulify.Domain.Entities.Base;
 
 namespace Schedulify.Infrastructure.Data.Configurations;
 

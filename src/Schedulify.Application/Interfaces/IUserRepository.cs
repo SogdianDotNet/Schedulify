@@ -1,21 +1,22 @@
-﻿using Schedulify.Domain.Dtos.Users;
+﻿using Schedulify.Application.Dtos.Users;
+using Schedulify.Domain.Entities.Users;
 using Schedulify.Domain.Enums;
 
 namespace Schedulify.Application.Interfaces;
 
-public interface IUserRepository
+internal interface IUserRepository
 {
-    Task<UserDto> GetAsync(Guid id, CancellationToken cancellationToken = default);
-    Task<UserDto> GetByEmailAsync(string email, CancellationToken cancellationToken = default);
-    Task<IReadOnlyCollection<UserDto>> GetByCompanyAsync(Guid companyId, CancellationToken cancellationToken = default);
-    Task<IReadOnlyCollection<UserDto>> GetAllAsync(bool includeDeleted = false, CancellationToken cancellationToken = default);
-    Task<bool> CheckPasswordAsync(UserDto dto, string password);
-    Task ResetAccessFailedCountAsync(UserDto dto);
-    Task AccessFailedAsync(UserDto dto);
-    Task<UserDto> CreateAsync(CreateUserDto dto, string password);
-    Task<UserDto> UpdateAsync(UserDto dto);
+    Task<User> GetAsync(Guid id, CancellationToken cancellationToken = default);
+    Task<User> GetByEmailAsync(string email, CancellationToken cancellationToken = default);
+    Task<IReadOnlyCollection<User>> GetByCompanyAsync(Guid companyId, CancellationToken cancellationToken = default);
+    Task<IReadOnlyCollection<User>> GetAllAsync(bool includeDeleted = false, CancellationToken cancellationToken = default);
+    Task<bool> CheckPasswordAsync(User user, string password);
+    Task ResetAccessFailedCountAsync(User user);
+    Task AccessFailedAsync(User user);
+    Task<User> CreateAsync(CreateUserDto dto, string password);
+    Task<User> UpdateAsync(User user);
     Task AssignToRoleAsync(Guid userId, ApplicationRole role);
     Task RemoveFromRoleAsync(Guid userId, ApplicationRole role);
     Task DeleteAsync(Guid id);
-    Task<string> GenerateEmailConfirmationTokenAsync(UserDto dto);
+    Task<string> GenerateEmailConfirmationTokenAsync(User user);
 }

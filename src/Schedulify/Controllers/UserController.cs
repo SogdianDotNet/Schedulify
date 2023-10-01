@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Schedulify.Application.Dtos.Users;
 using Schedulify.Application.Services.Interfaces;
-using Schedulify.Domain.Dtos.Users;
 
 namespace Schedulify.API.Controllers;
 

@@ -1,9 +1,9 @@
-﻿using Schedulify.Domain.Dtos.Companies;
+﻿using Schedulify.Domain.Entities.Companies;
 
 namespace Schedulify.Application.Interfaces;
 
-public interface ICompanySettingsRepository
+internal interface ICompanySettingsRepository
 {
-    Task<CompanySettingsDto> GetByCompanyIdAsync(Guid companyId, CancellationToken cancellationToken = default);
-    Task<CompanySettingsDto> UpdateAsync(CompanySettingsDto dto, CancellationToken cancellationToken = default);
+    Task<CompanySettings> GetByCompanyIdAsync(Guid companyId, CancellationToken cancellationToken = default);
+    Task<CompanySettings> UpdateAsync(CompanySettings companyompanySettings, CancellationToken cancellationToken = default);
 }

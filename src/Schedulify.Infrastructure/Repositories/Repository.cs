@@ -1,9 +1,8 @@
 ﻿using System.Linq.Expressions;
-using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Schedulify.Domain.Entities.Base;
 using Schedulify.Infrastructure.Data;
-using Schedulify.Infrastructure.Data.Entities.Base;
 
 namespace Schedulify.Infrastructure.Repositories;
 
@@ -61,7 +60,7 @@ internal abstract class Repository<T> : IRepository<T> where T : Entity
         return (await UpdateInternalAsync(new[] { entity }, includes, cancellationToken)).Single();
     }
 
-    public async Task<IReadOnlyCollection<T>> CreateRangeAsync(IEnumerable<T> entities, CancellationToken cancellationToken = default)
+    public async Task<IReadOnlyCollection<T>> CreateRangeAsync(IReadOnlyCollection<T> entities, CancellationToken cancellationToken = default)
     {
         if (entities is null || !entities.Any())
         {
@@ -71,7 +70,7 @@ internal abstract class Repository<T> : IRepository<T> where T : Entity
         return (await UpdateInternalAsync(entities, null, cancellationToken)).ToList().AsReadOnly();
     }
 
-    public async Task<IReadOnlyCollection<T>> UpdateRangeAsync(IEnumerable<T> entities, CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<T>> UpdateRangeAsync(IReadOnlyCollection<T> entities, CancellationToken cancellationToken = default)
     {
         if (entities is null || !entities.Any())
         {
@@ -94,9 +93,7 @@ internal abstract class Repository<T> : IRepository<T> where T : Entity
             }
         }
 
-        await _dbContext.SaveChangesAsync(cancellationToken);
-
-        return entities!.ToList().AsReadOnly();
+        return entities;
     }
 
     public async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
@@ -109,7 +106,6 @@ internal abstract class Repository<T> : IRepository<T> where T : Entity
         }
         
         _dbContext.Remove(dbEntity);
-        await _dbContext.SaveChangesAsync(cancellationToken);
     }
 
     public async Task DeleteAsync(T entity, CancellationToken cancellationToken = default)
@@ -120,10 +116,9 @@ internal abstract class Repository<T> : IRepository<T> where T : Entity
         }
         
         _dbContext.Remove(entity);
-        await _dbContext.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task DeleteRangeAsync(IEnumerable<Guid> ids, CancellationToken cancellationToken = default)
+    public async Task DeleteRangeAsync(IReadOnlyCollection<Guid> ids, CancellationToken cancellationToken = default)
     {
         var entities = await _dbContext.Set<T>().Where(x => ids.Contains(x.Id)).ToListAsync(cancellationToken);
 
@@ -133,18 +128,16 @@ internal abstract class Repository<T> : IRepository<T> where T : Entity
         }
 
         _dbContext.RemoveRange(entities);
-        await _dbContext.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task DeleteRangeAsync(IEnumerable<T> entities, CancellationToken cancellationToken = default)
+    public void DeleteRange(IReadOnlyCollection<T> entities, CancellationToken cancellationToken = default)
     {
         _dbContext.RemoveRange(entities);
-        await _dbContext.SaveChangesAsync(cancellationToken);
     }
 
     #region Helpers
     
-    private async Task<IEnumerable<T>> UpdateInternalAsync(IEnumerable<T> entities, List<Expression<Func<T, object>>>? includes = null, CancellationToken cancellationToken = default)
+    private async Task<IReadOnlyCollection<T>> UpdateInternalAsync(IReadOnlyCollection<T> entities, List<Expression<Func<T, object>>>? includes = null, CancellationToken cancellationToken = default)
     {
         foreach (var entity in entities)
         {
@@ -176,8 +169,6 @@ internal abstract class Repository<T> : IRepository<T> where T : Entity
                 _dbContext.Update(entity);
             }
         }
-
-        await _dbContext.SaveChangesAsync(cancellationToken);
             
         return entities;
     }

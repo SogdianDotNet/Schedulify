@@ -1,10 +1,10 @@
 ﻿using System.Reflection;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Schedulify.Infrastructure.Data.Entities.Companies;
-using Schedulify.Infrastructure.Data.Entities.Contracts;
-using Schedulify.Infrastructure.Data.Entities.Employees;
-using Schedulify.Infrastructure.Data.Entities.Users;
+using Schedulify.Domain.Entities.Companies;
+using Schedulify.Domain.Entities.Contracts;
+using Schedulify.Domain.Entities.Employees;
+using Schedulify.Domain.Entities.Users;
 
 namespace Schedulify.Infrastructure.Data;
 

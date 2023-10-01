@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using Schedulify.Domain.Dtos.Employees;
+using Schedulify.Application.Dtos.Employees;
+using Schedulify.Domain.Entities.Employees;
 using Schedulify.Infrastructure.Data;
-using Schedulify.Infrastructure.Data.Entities.Employees;
 
 namespace Schedulify.Infrastructure.Repositories;
 

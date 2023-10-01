@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Schedulify.Application.Dtos.Users;
 using Schedulify.Application.Interfaces;
-using Schedulify.Domain.Dtos.Users;
+using Schedulify.Domain.Entities.Users;
 using Schedulify.Domain.Enums;
 using Schedulify.Infrastructure.Data;
-using Schedulify.Infrastructure.Data.Entities.Users;
 
 namespace Schedulify.Infrastructure.Repositories;
 
@@ -22,7 +22,7 @@ internal class UserRepository : IUserRepository
         _dbContext = dbContext;
     }
 
-    public async Task<UserDto> GetAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<User> GetAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var user = await _dbContext.Users
             .Include(x => x.UserRoles)!
@@ -30,10 +30,10 @@ internal class UserRepository : IUserRepository
             .AsNoTracking()
             .SingleAsync(x => x.Id == id, cancellationToken);
 
-        return _mapper.Map<UserDto>(user);
+        return user;
     }
 
-    public async Task<UserDto> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
+    public async Task<User> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
     {
         var user = await _dbContext.Users
             .Include(x => x.UserRoles)!
@@ -41,27 +41,27 @@ internal class UserRepository : IUserRepository
             .AsNoTracking()
             .SingleAsync(x => x.Email!.ToLower() == email.ToLower(), cancellationToken);
 
-        return _mapper.Map<UserDto>(user);
+        return user;
     }
 
-    public async Task<bool> CheckPasswordAsync(UserDto dto, string password)
+    public async Task<bool> CheckPasswordAsync(User dto, string password)
     {
         var user = _mapper.Map<User>(dto);
 
         return await _userManager.CheckPasswordAsync(user, password);
     }
 
-    public Task ResetAccessFailedCountAsync(UserDto dto)
+    public Task ResetAccessFailedCountAsync(User dto)
     {
         return _userManager.ResetAccessFailedCountAsync(_mapper.Map<User>(dto));
     }
 
-    public Task AccessFailedAsync(UserDto dto)
+    public Task AccessFailedAsync(User dto)
     {
         return _userManager.AccessFailedAsync(_mapper.Map<User>(dto));
     }
 
-    public async Task<IReadOnlyCollection<UserDto>> GetByCompanyAsync(Guid companyId, CancellationToken cancellationToken = default)
+    public async Task<IReadOnlyCollection<User>> GetByCompanyAsync(Guid companyId, CancellationToken cancellationToken = default)
     {
         var users = await _dbContext.Users
             .Include(x => x.Company)
@@ -69,10 +69,10 @@ internal class UserRepository : IUserRepository
             .AsNoTracking()
             .ToListAsync(cancellationToken);
 
-        return _mapper.Map<IReadOnlyCollection<UserDto>>(users);
+        return users.AsReadOnly();
     }
 
-    public async Task<IReadOnlyCollection<UserDto>> GetAllAsync(bool includeDeleted = false, CancellationToken cancellationToken = default)
+    public async Task<IReadOnlyCollection<User>> GetAllAsync(bool includeDeleted = false, CancellationToken cancellationToken = default)
     {
         var users = await _dbContext.Users
             .Include(x => x.Company)
@@ -80,10 +80,10 @@ internal class UserRepository : IUserRepository
             .AsNoTracking()
             .ToListAsync(cancellationToken);
 
-        return _mapper.Map<IReadOnlyCollection<UserDto>>(users);
+        return users.AsReadOnly();
     }
 
-    public async Task<UserDto> CreateAsync(CreateUserDto dto, string password)
+    public async Task<User> CreateAsync(CreateUserDto dto, string password)
     {
         var user = _mapper.Map<User>(dto);
         user.CreatedOnUtc = DateTime.UtcNow;
@@ -96,30 +96,30 @@ internal class UserRepository : IUserRepository
         }
         
         await _userManager.AddToRolesAsync(user, dto.Roles);
-        return _mapper.Map<UserDto>(user);
+        return user;
     }
 
-    public Task<string> GenerateEmailConfirmationTokenAsync(UserDto dto)
+    public Task<string> GenerateEmailConfirmationTokenAsync(User user)
     {
-        return _userManager.GenerateEmailConfirmationTokenAsync(_mapper.Map<User>(dto));
+        return _userManager.GenerateEmailConfirmationTokenAsync(user);
     }
 
-    public async Task<UserDto> UpdateAsync(UserDto dto)
+    public async Task<User> UpdateAsync(User user)
     {
-        var user = await _userManager.FindByIdAsync(dto.Id.ToString());
+        var entity = await _userManager.FindByIdAsync(user.Id.ToString());
 
-        ArgumentNullException.ThrowIfNull(user);
+        ArgumentNullException.ThrowIfNull(entity);
 
-        user!.Firstname = dto.Firstname;
-        user.Lastname = dto.Lastname;
-        user.UserName = dto.UserName;
-        user.Email = dto.Email;
-        user.PhoneNumber = dto.PhoneNumber;
-        user.IsAllowedToLogin = dto.IsAllowedToLogin;
+        entity!.Firstname = user.Firstname;
+        entity.Lastname = user.Lastname;
+        entity.UserName = user.UserName;
+        entity.Email = user.Email;
+        entity.PhoneNumber = user.PhoneNumber;
+        entity.IsAllowedToLogin = user.IsAllowedToLogin;
 
         await _dbContext.SaveChangesAsync();
 
-        return _mapper.Map<UserDto>(user);
+        return entity;
     }
 
     public async Task AssignToRoleAsync(Guid userId, ApplicationRole role)

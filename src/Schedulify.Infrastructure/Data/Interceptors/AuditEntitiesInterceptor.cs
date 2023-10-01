@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Newtonsoft.Json;
 using Schedulify.Application.Providers;
-using Schedulify.Infrastructure.Data.Attributes;
-using Schedulify.Infrastructure.Data.Entities;
-using Schedulify.Infrastructure.Data.Entities.Base;
+using Schedulify.Domain.Attributes;
+using Schedulify.Domain.Entities;
+using Schedulify.Domain.Entities.Base;
 
 namespace Schedulify.Infrastructure.Data.Interceptors;
 

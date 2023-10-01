@@ -1,6 +1,6 @@
 ﻿using System.Buffers.Text;
 using System.Security.Claims;
-using Schedulify.Domain.Dtos.Users;
+using Schedulify.Application.Dtos.Users;
 
 namespace Schedulify.Application.Providers;
 

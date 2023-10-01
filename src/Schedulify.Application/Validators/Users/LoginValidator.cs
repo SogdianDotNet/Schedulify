@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using Schedulify.Domain.Dtos.Users;
+using Schedulify.Application.Dtos.Users;
 
 namespace Schedulify.Application.Validators.Users;
 

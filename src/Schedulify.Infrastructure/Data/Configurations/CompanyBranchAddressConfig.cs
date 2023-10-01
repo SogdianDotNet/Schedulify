@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Schedulify.Infrastructure.Data.Entities.Companies;
+using Schedulify.Domain.Entities.Companies;
 
 namespace Schedulify.Infrastructure.Data.Configurations;
 
@@ -8,6 +8,7 @@ internal class CompanyBranchAddressConfig : IEntityTypeConfiguration<CompanyBran
 {
     public void Configure(EntityTypeBuilder<CompanyBranchAddress> builder)
     {
+        builder.ToTable("CompanyBranchAddresses", x => x.IsTemporal());
         builder.HasKey(x => new { x.AddressId, x.CompanyBranchId });
 
         builder.HasOne(x => x.Address)

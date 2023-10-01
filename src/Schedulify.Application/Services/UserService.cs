@@ -2,25 +2,28 @@
 using System.Security.Cryptography;
 using System.Text;
 using System.Web;
+using AutoMapper;
 using FluentValidation;
 using Schedulify.Application.Configurations;
+using Schedulify.Application.Dtos.Users;
+using Schedulify.Application.Dtos.Users.Enums;
 using Schedulify.Application.Exceptions;
 using Schedulify.Application.Interfaces;
 using Schedulify.Application.Providers;
 using Schedulify.Application.Services.Interfaces;
 using Schedulify.Domain.Commands;
-using Schedulify.Domain.Dtos.Users;
-using Schedulify.Domain.Dtos.Users.Enums;
+using Schedulify.Domain.Entities.Users;
 
 namespace Schedulify.Application.Services;
 
-public sealed class UserService : IUserService
+internal sealed class UserService : IUserService
 {
     private readonly IValidator<LoginDto> _loginValidator;
     private readonly IValidator<CreateUserDto> _createUserValidator;
     private readonly IUserRepository _userRepository;
     private readonly IJwtProvider _jwtProvider;
     private readonly IQueueClient _queueClient;
+    private readonly IMapper _mapper;
     private readonly WebFrontendConfiguration _webFrontendConfiguration;
 
     public UserService(
@@ -28,7 +31,8 @@ public sealed class UserService : IUserService
         IValidator<CreateUserDto> createUserValidator,
         IUserRepository userRepository,
         IJwtProvider jwtProvider, 
-        IQueueClient queueClient, 
+        IQueueClient queueClient,
+        IMapper mapper,
         WebFrontendConfiguration webFrontendConfiguration)
     {
         _loginValidator = loginValidator;
@@ -37,11 +41,12 @@ public sealed class UserService : IUserService
         _jwtProvider = jwtProvider;
         _queueClient = queueClient;
         _webFrontendConfiguration = webFrontendConfiguration;
+        _mapper = mapper;
     }
 
-    public Task<UserDto> GetAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<UserDto> GetAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        return _userRepository.GetAsync(id, cancellationToken);
+        return _mapper.Map<UserDto>(await _userRepository.GetAsync(id, cancellationToken));
     }
 
     public async Task<UserDto> CreateAsync(CreateUserDto dto, CancellationToken cancellationToken = default)
@@ -61,7 +66,7 @@ public sealed class UserService : IUserService
                    $"<br/><br/>Activate your account with the provided link. The link is active for 4 days. <br><br><strong>Link</strong>: {link}"
         });
 
-        return user;
+        return _mapper.Map<UserDto>(user);
     }
 
     public async Task<LoginResultDto> LoginAsync(LoginDto login, CancellationToken cancellationToken = default)
@@ -86,7 +91,7 @@ public sealed class UserService : IUserService
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
         };
         
-        claims.AddRange(user.Roles.Select(r => new Claim(ClaimTypes.Role, r)));
+        claims.AddRange(user.UserRoles.Select(r => new Claim(ClaimTypes.Role, r.Role.Name)));
 
         return new()
         {
@@ -115,7 +120,7 @@ public sealed class UserService : IUserService
         return password.ToString();
     }
 
-    private async Task<LoginResult> LoginAsync(UserDto user, LoginDto login)
+    private async Task<LoginResult> LoginAsync(User user, LoginDto login)
     {
         if (!user.EmailConfirmed)
         {
