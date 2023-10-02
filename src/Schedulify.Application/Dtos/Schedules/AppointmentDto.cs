@@ -14,6 +14,8 @@ public class AppointmentDto : Dto
     public DateTime EndDateTimeUtc { get; set; }
     public bool IsCanceled { get; set; }
     public DateTime? CancellationDateTimeUtc { get; set; }
+    public required Guid EmployeeId { get; set; }
+    public required Guid AppointmentTypeId { get; set; }
     public EmployeeDto? Employee { get; set; }
     public AppointmentTypeDto? AppointmentType { get; set; }
 }

@@ -14,6 +14,8 @@ internal class Appointment : Entity
     public DateTime EndDateTimeUtc { get; set; }
     public bool IsCanceled { get; set; }
     public DateTime? CancellationDateTimeUtc { get; set; }
+    public required Guid EmployeeId { get; set; }
+    public required Guid AppointmentTypeId { get; set; }
     public virtual required Employee Employee { get; set; }
     public virtual required AppointmentType AppointmentType { get; set; }
 }
