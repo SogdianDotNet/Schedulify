@@ -20,6 +20,7 @@ internal sealed class UserService : IUserService
 {
     private readonly IValidator<LoginDto> _loginValidator;
     private readonly IValidator<CreateUserDto> _createUserValidator;
+    private readonly IValidator<UpdateUserDto> _updateUserValidator;
     private readonly IUserRepository _userRepository;
     private readonly IJwtProvider _jwtProvider;
     private readonly IQueueClient _queueClient;
@@ -29,6 +30,7 @@ internal sealed class UserService : IUserService
     public UserService(
         IValidator<LoginDto> loginValidator, 
         IValidator<CreateUserDto> createUserValidator,
+        IValidator<UpdateUserDto> updateUserValidator,
         IUserRepository userRepository,
         IJwtProvider jwtProvider, 
         IQueueClient queueClient,
@@ -37,6 +39,7 @@ internal sealed class UserService : IUserService
     {
         _loginValidator = loginValidator;
         _createUserValidator = createUserValidator;
+        _updateUserValidator = updateUserValidator;
         _userRepository = userRepository;
         _jwtProvider = jwtProvider;
         _queueClient = queueClient;
@@ -47,6 +50,21 @@ internal sealed class UserService : IUserService
     public async Task<UserDto> GetAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return _mapper.Map<UserDto>(await _userRepository.GetAsync(id, cancellationToken));
+    }
+
+    public async Task<UserDto> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
+    {
+        return _mapper.Map<UserDto>(await _userRepository.GetByEmailAsync(email, cancellationToken));
+    }
+
+    public async Task<IReadOnlyCollection<UserDto>> GetAllAsync(bool includeDeleted = false, CancellationToken cancellationToken = default)
+    {
+        return _mapper.Map<IReadOnlyCollection<UserDto>>(await _userRepository.GetAllAsync(includeDeleted, cancellationToken));
+    }
+
+    public async Task<IReadOnlyCollection<UserDto>> GetByCompanyAsync(Guid companyId, CancellationToken cancellationToken = default)
+    {
+        return _mapper.Map<IReadOnlyCollection<UserDto>>(await _userRepository.GetByCompanyAsync(companyId, cancellationToken));
     }
 
     public async Task<UserDto> CreateAsync(CreateUserDto dto, CancellationToken cancellationToken = default)
@@ -65,6 +83,14 @@ internal sealed class UserService : IUserService
             Body = $"Your password is {password}" +
                    $"<br/><br/>Activate your account with the provided link. The link is active for 4 days. <br><br><strong>Link</strong>: {link}"
         });
+
+        return _mapper.Map<UserDto>(user);
+    }
+
+    public async Task<UserDto> UpdateAsync(UpdateUserDto dto, CancellationToken cancellationToken = default)
+    {
+        await _updateUserValidator.ValidateAndThrowAsync(dto, cancellationToken);
+        var user = await _userRepository.UpdateAsync(dto);
 
         return _mapper.Map<UserDto>(user);
     }

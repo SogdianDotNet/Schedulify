@@ -44,21 +44,19 @@ internal class UserRepository : IUserRepository
         return user;
     }
 
-    public async Task<bool> CheckPasswordAsync(User dto, string password)
+    public async Task<bool> CheckPasswordAsync(User user, string password)
     {
-        var user = _mapper.Map<User>(dto);
-
         return await _userManager.CheckPasswordAsync(user, password);
     }
 
-    public Task ResetAccessFailedCountAsync(User dto)
+    public Task ResetAccessFailedCountAsync(User user)
     {
-        return _userManager.ResetAccessFailedCountAsync(_mapper.Map<User>(dto));
+        return _userManager.ResetAccessFailedCountAsync(user);
     }
 
-    public Task AccessFailedAsync(User dto)
+    public Task AccessFailedAsync(User user)
     {
-        return _userManager.AccessFailedAsync(_mapper.Map<User>(dto));
+        return _userManager.AccessFailedAsync(user);
     }
 
     public async Task<IReadOnlyCollection<User>> GetByCompanyAsync(Guid companyId, CancellationToken cancellationToken = default)
@@ -104,18 +102,16 @@ internal class UserRepository : IUserRepository
         return _userManager.GenerateEmailConfirmationTokenAsync(user);
     }
 
-    public async Task<User> UpdateAsync(User user)
+    public async Task<User> UpdateAsync(UpdateUserDto dto)
     {
-        var entity = await _userManager.FindByIdAsync(user.Id.ToString());
+        var entity = await _userManager.FindByIdAsync(dto.Id.ToString());
 
         ArgumentNullException.ThrowIfNull(entity);
 
-        entity!.Firstname = user.Firstname;
-        entity.Lastname = user.Lastname;
-        entity.UserName = user.UserName;
-        entity.Email = user.Email;
-        entity.PhoneNumber = user.PhoneNumber;
-        entity.IsAllowedToLogin = user.IsAllowedToLogin;
+        entity.Firstname = dto.Firstname;
+        entity.Lastname = dto.Lastname;
+        entity.Email = dto.Email;
+        entity.PhoneNumber = dto.PhoneNumber;
 
         await _dbContext.SaveChangesAsync();
 
@@ -168,12 +164,11 @@ internal class UserRepository : IUserRepository
 
         ArgumentNullException.ThrowIfNull(user);
 
-        user!.IsDeleted = true;
+        user.IsDeleted = true;
         user.DeletedOnUtc = DateTime.UtcNow;
         user.IsAllowedToLogin = false;
         user.LockoutEnabled = true;
         user.LockoutEnd = DateTimeOffset.Now.AddYears(99);
-        user.CreatedOnUtc = DateTime.UtcNow;
         user.ModifiedOnUtc = DateTime.UtcNow;
         var result = await _userManager.UpdateAsync(user);
 

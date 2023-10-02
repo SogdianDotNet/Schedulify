@@ -14,5 +14,6 @@ public static class ServiceCollectionInfrastructure
     {
         services.TryAddScoped<ICompanyRepository, CompanyRepository>();
         services.TryAddScoped<ICompanySettingsRepository, CompanySettingsRepository>();
+        services.TryAddScoped<IUserRepository, UserRepository>();
     }
 }

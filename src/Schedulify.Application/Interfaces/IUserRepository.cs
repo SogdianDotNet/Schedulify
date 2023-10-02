@@ -14,7 +14,7 @@ internal interface IUserRepository
     Task ResetAccessFailedCountAsync(User user);
     Task AccessFailedAsync(User user);
     Task<User> CreateAsync(CreateUserDto dto, string password);
-    Task<User> UpdateAsync(User user);
+    Task<User> UpdateAsync(UpdateUserDto dto);
     Task AssignToRoleAsync(Guid userId, ApplicationRole role);
     Task RemoveFromRoleAsync(Guid userId, ApplicationRole role);
     Task DeleteAsync(Guid id);

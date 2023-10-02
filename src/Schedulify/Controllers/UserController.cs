@@ -25,13 +25,23 @@ public class UserController : BaseController
 
         return Ok(result);
     }
-    
+
     [Authorize(Roles = Admins)]
     [HttpPost]
     [ProducesResponseType(typeof(void), StatusCodes.Status202Accepted)]
     public async Task<IActionResult> Create(CreateUserDto dto, CancellationToken cancellationToken)
     {
         await _userService.CreateAsync(dto, cancellationToken);
+
+        return Accepted();
+    }
+
+    [Authorize]
+    [HttpPut]
+    [ProducesResponseType(typeof(void), StatusCodes.Status202Accepted)]
+    public async Task<IActionResult> Update(UpdateUserDto dto, CancellationToken cancellationToken)
+    {
+        await _userService.UpdateAsync(dto, cancellationToken);
 
         return Accepted();
     }
